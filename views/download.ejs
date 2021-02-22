@@ -18,7 +18,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@1,600&display=swap" rel="stylesheet">
 </head>
-<body style="font-family: 'Nunito', sans-serif; display: flex; flex-direction: column; justify-content: center;">
+<body style="overflow:hidden; font-family: 'Nunito', sans-serif; display: flex; flex-direction: column; justify-content: center;">
+<div class="header" style="position: absolute; top:5%; left:5%; color: #3a0ca3; width: 100%;">
+    <i class="fa fa-share" style="font-size:50px;"></i><span style="font-size: x-large;">Share</span>
+    <span style="display: block; font-size: medium;">Share your files in a fast and secure way</span>
+</div>
 <% if (flasherror.length>0) { %>
 <div class="flash" style="width: 50%; padding: 1%; margin: 1%; background-color: white;">
 <div style="float: left;">
@@ -43,9 +47,9 @@
             <i class="fa fa-download" aria-hidden="true" style="font-size: 120px; color:#219ebc;"></i>
         </div>
         <% if (uuid!=-1) { %>
-            <span style="display: block; margin: 2%; font-size: medium;"><%= name %></span>
-            <span style="display: block; margin: 2%; font-size: medium;"><%= (parseInt(size)/1000000 ).toFixed(2)%>mb</span>
-            <span style="display: block; margin: 2%; font-size: medium;">Click below to download your file</span>
+            <span style="display: block; margin: 2%; font-size: medium;  text-align: center;"><%= name %></span>
+            <span style="display: block; margin: 2%; font-size: medium; text-align: center;"><%= (parseInt(size)/1000000 ).toFixed(2)%>mb</span>
+            <span style="display: block; margin: 2%; font-size: medium; text-align: center;">Click below to download your file</span>
             <div>
                 <form action="/file/download/<%= uuid %>" method="POST"> 
                     <button role="submit" style="font-family: 'Nunito', sans-serif; background-color:white ; padding: 3%; color: #219ebc;border: none; font-size: medium; margin: 3%; cursor: pointer;">Download</button>

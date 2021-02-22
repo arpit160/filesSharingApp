@@ -43,6 +43,14 @@
     justify-content: center;
     flex-direction: column;
   }
+  .div1{
+    padding:1% 2% 1% 2%;
+    width: 50%;
+  }
+  .div2{
+    padding-top:10%;
+    padding-bottom:10%;
+  }
   .div2 span, .div2 i{
     display: block;
     padding: .2%;
@@ -73,14 +81,24 @@
   .emailform label{
     margin:2%;
   }
+  .span1:focus{
+    outline: none;
+  }
+
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@1,600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 </head>
 
-<body style="font-family: 'Nunito', sans-serif; display: flex; flex-direction: column;">
+<body style="overflow: hidden; font-family: 'Nunito', sans-serif; display: flex; flex-direction: column; position: relative;">
 
+  <div class="header" style="position: absolute; top:5%; left:5%; color: #3a0ca3; width: 100%;">
+    <i class="fa fa-share" style="font-size:50px;"></i><span style="font-size: x-large;">Share</span>
+    <span style="display: block; font-size: medium;">Share your files in a fast and secure way</span>
+  </div>
   
     <% if (flasherror.length>0) { %>
     <div class="flash" style="width: 50%; padding: 1%; margin: 1%; background-color: white;">
@@ -107,32 +125,36 @@
   <div class="div2">
 
     <div class="div5">
-      <i class="fa fa-file" draggable="false" style="color: #219ebc; font-size: 60px; padding: .5%; margin-bottom: 20%;"></i>
+      <i class="fa fa-file" draggable="false" style="color: #219ebc; font-size: 60px; padding: .5%; margin-bottom: 40%;"></i>
     </div>
     <div class="div3">
       <span style="text-decoration: underline; color:#0077b6; cursor: pointer; " class="browse">Browse</span>
       <span>Or</span>
-      <span>Drag your file here</span>
+      <span style=" text-align: center;">Drop your file here</span>
     </div>
 
     <div class="div4" style="display: none; flex-direction: column; margin:.1% 2% .1% 2%; width:96%;">
       <i class="fa fa-file" draggable="false" style="color: #219ebc; font-size: 60px; padding: .5%;"></i>
-      <span  class="span2" style="display: block;"></span>
-      <span  class="span1" style="display: block;"></span>
-      <span  class="span3" style="display: block;"></span>
-      <span class="copy" style="display: block; text-decoration: underline; color:#0077b6; cursor: pointer;">Copy</span>
-      <span>Or</span>
-      <span style="display: block;">Share via email</span>
-      <form class="emailform" method="POST" style="width:100%;">
-          <div style="display: flex; justify-content: space-around;">
-          <label for="from">Sender's Email</label>
-          <input type="email" name="fromemail" id="from">
+      <span  class="span2" style="display: block; text-align: center;"></span>
+     <div style="width: 100%; display: flex; justify-content: center;">
+      <span style="width: 80%; border:2px solid black; border-radius: 3%; padding: 1%; padding-right: .5%;">
+        <input style="border:none; font-size:small; font-family: 'Nunito', sans-serif; width: 90%; float: left;" readonly class="span1">
+        <button style="outline:none; border:none; background-color: white; width: 10%; padding-right: 0; float: right; cursor: pointer;"><i style="color: #219ebc;" class="fa  fa-clipboard copy"></i></button>
+        <div style="clear: both; height: 0;"></div>
+      </span>
+     </div>
+      <span  class="span3" style="display: block; text-align: center;"></span>
+      <span style="display: block;font-size: small;  text-align: center;">Or,share via email</span>
+      <form class="emailform" method="POST" style="width:50%;">
+          <div style="display: flex; justify-content: space-around; flex-direction: column;">
+          <label for="from" style="display: block;font-size: small;">Sender's Email</label>
+          <input type="email" name="fromemail" id="from" style="display: block;">
           </div>
-          <div style="display: flex; justify-content: space-around;">
-          <label for="to">Reciever's Email</label>
-          <input type="email" name="toemail" id="to">
+          <div style="display: flex; justify-content: space-around; flex-direction: column;" >
+          <label for="to" style="display: block;font-size: small;">Reciever's Email</label>
+          <input type="email" name="toemail" id="to" style="display: block;">
           </div>
-          <input style="font-family: 'Nunito', sans-serif; display: block; margin:auto; background-color:#a8dadc; padding: 1%;border:none;; border-radius: 5%; cursor:pointer;" type="submit">
+          <button style="font-family: 'Nunito', sans-serif; display: block; margin:auto; margin-top: 2%;  background-color:#a8dadc; padding: 1% 3% 1% 3%; border-radius: 5%; cursor:pointer; font-size: small; font-weight: bold;">Send</button>
       </form>
     </div>
   </div>
@@ -180,16 +202,17 @@
       body:formdata
     })
     res=await res.json();
-    document.querySelector('.div1').style.width='50%';
+    document.querySelector('.div1').style.width='40%';
+    document.querySelector('.div1').style.marginTop='20%';
+    document.querySelector('.div1').style.marginTop='0%';
     document.querySelector('.div2').style.paddingTop='1%';
     document.querySelector('.div2').style.paddingBottom='1%';
     document.querySelector('.div3').style.display='none';
-    document.querySelector('.div4').style.backgroundColor="#edf6f9";
     document.querySelector('.div4').style.display="flex";
     document.querySelector('.div5').style.display='none';
-    document.querySelector('.span2').innerHTML=`<div style="display:flex; flex-direction:column; justify-content:center; align-items:center;"><div style="margin-top:2%;">${res.name}</div><div style="margin-top:2%;">${(parseInt(res.size)/1000000).toFixed(2)}mb</div></div>`
-    document.querySelector('.span1').innerHTML=`<div style="margin-top:2%; color:#0077b6;">${res.link}</div>`
-    document.querySelector('.span3').innerHTML=`<div style="margin-top:2%;">Link will expire in next 24 hours</div>`
+    document.querySelector('.span2').innerHTML=`<div style="display:flex; flex-direction:column; justify-content:center; align-items:center;"><div style="margin-top:1%; font-size:small; color: #219ebc">${res.name}</div><div style="font-size:small; margin-top:1%; color: #219ebc">${(parseInt(res.size)/1000000).toFixed(2)}mb</div></div>`
+    document.querySelector('.span1').value=res.link
+    document.querySelector('.span3').innerHTML=`<div style="margin-top:.3%; font-size:small; color:grey;">Link will expire in next 24 hours</div>`
     emailform=document.querySelector('.emailform')
     emailform.action="/send/"+res.uuid;
     console.log(res)
@@ -214,16 +237,17 @@
       body:formdata
     })
     res=await res.json();
-    document.querySelector('.div1').style.width='50%';
+    document.querySelector('.div1').style.width='40%';
+    document.querySelector('.div1').style.marginTop='20%';
+    document.querySelector('.div1').style.marginTop='0%';
     document.querySelector('.div2').style.paddingTop='1%';
     document.querySelector('.div2').style.paddingBottom='1%';
     document.querySelector('.div3').style.display='none';
-    document.querySelector('.div4').style.backgroundColor="#edf6f9";
     document.querySelector('.div4').style.display="flex";
     document.querySelector('.div5').style.display='none';
-    document.querySelector('.span2').innerHTML=`<div style="display:flex; flex-direction:column; justify-content:center; align-items:center;"><div style="margin-top:2%;">${res.name}</div><div style="margin-top:2%;">${(parseInt(res.size)/1000000).toFixed(2)}mb</div></div>`
-    document.querySelector('.span1').innerHTML=`<div style="margin-top:2%; color:#0077b6;">${res.link}</div>`
-    document.querySelector('.span3').innerHTML=`<div style="margin-top:2%;">Link will expire in next 24 hours</div>`
+    document.querySelector('.span2').innerHTML=`<div style="display:flex; flex-direction:column; justify-content:center; align-items:center;"><div style="margin-top:1%; font-size:small; color: #219ebc">${res.name}</div><div style="font-size:small; margin-top:1%; color: #219ebc">${(parseInt(res.size)/1000000).toFixed(2)}mb</div></div>`
+    document.querySelector('.span1').value=res.link
+    document.querySelector('.span3').innerHTML=`<div style="margin-top:.3%; font-size:small; color:grey;">Link will expire in next 24 hours</div>`
     emailform=document.querySelector('.emailform')
     emailform.action="/send/"+res.uuid;
     })
@@ -237,7 +261,7 @@
     //The select() method triggers the select event, or attaches a function to run when a select event occurs.
 
     copyinput=document.createElement('input');
-    copyinput.value=document.querySelector('.span1').innerText;
+    copyinput.value=document.querySelector('.span1').value;
     document.querySelector('body').appendChild(copyinput)
     copyinput.select();
 
@@ -251,5 +275,8 @@
   {
     document.querySelector('.flash').style.display='none';
   })
+ 
+  
+
 </script>
 </body>
