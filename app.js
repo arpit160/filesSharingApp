@@ -75,6 +75,11 @@ app.use(async(req,res,next)=>
     next();
 })
 //setting routes
+app.get('/',(req,res)=>
+{
+  res.redirect('/file/upload');
+})
+
 app.get('/file/upload',(req,res)=>
 {
   res.render('upload')
