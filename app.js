@@ -168,7 +168,7 @@ app.post('/send/:uuid',async(req,res,next)=>
   return res.redirect("/file/upload")
 })
 
-let port=process.env.port || 3000
+let port=process.env.PORT || 3000
 
 app.listen(port,()=>
 {
