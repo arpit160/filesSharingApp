@@ -1,0 +1,65 @@
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+     body{
+   padding:0%;
+   margin:0%;
+   box-sizing: border-box;
+   background-color:#a8dadc ;
+  }
+ body{
+   display: flex;
+   min-height: 100vh;
+   align-items: center;
+   justify-content: center;
+ }
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@1,600&display=swap" rel="stylesheet">
+</head>
+<body style="font-family: 'Nunito', sans-serif; display: flex; flex-direction: column; justify-content: center;">
+<% if (flasherror.length>0) { %>
+<div class="flash" style="width: 50%; padding: 1%; margin: 1%; background-color: white;">
+<div style="float: left;">
+    <%= flasherror[0] %>
+</div>
+    <span class="clsbtn" style="float:right; cursor: pointer;"><i class="fa fa-times"></i></span>
+    <div style="clear: both; height: 0px;"></div>
+</div> 
+<% }else if(flashsuccess.length>0){ %>
+    <div class="flash" style="width: 50%; padding: 1%; margin: 1%; background-color: white;">
+    <div style="float: left;">
+    <%= flashsuccess[0] %> 
+    </div>
+    <span class="clsbtn" style="float:right; cursor: pointer;"><i class="fa fa-times"></i></span>
+    <div style="clear: both; height: 0px;"></div>
+    </div>
+<% } %>
+
+<div style=" width: 50%; background-color: white; min-height: 40%;">
+    <div style="border: 2px dashed #a8dadc;  margin: 2%; width: 96%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <div style="margin-top:4%;">
+            <i class="fa fa-download" aria-hidden="true" style="font-size: 120px; color:#219ebc;"></i>
+        </div>
+        <% if (uuid!=-1) { %>
+            <span style="display: block; margin: 2%; font-size: medium;"><%= name %></span>
+            <span style="display: block; margin: 2%; font-size: medium;"><%= (parseInt(size)/1000000 ).toFixed(2)%>mb</span>
+            <span style="display: block; margin: 2%; font-size: medium;">Click below to download your file</span>
+            <div>
+                <form action="/file/download/<%= uuid %>" method="POST"> 
+                    <button role="submit" style="font-family: 'Nunito', sans-serif; background-color:white ; padding: 3%; color: #219ebc;border: none; font-size: medium; margin: 3%; cursor: pointer;">Download</button>
+                </form>
+            </div>
+        <% }else{ %>
+            <span style="display: block; margin: 3%; font-size: medium;">Your download link has expired</span>
+        <% } %>
+    </div>
+</div>
+<script>
+  document.querySelector('.clsbtn').addEventListener('click',()=>
+  {
+    document.querySelector('.flash').style.display='none';
+  })
+</script>
+</body>

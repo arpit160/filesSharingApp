@@ -1,0 +1,255 @@
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  body{
+   padding:0%;
+   margin:0%;
+   box-sizing: border-box;
+   background-color:#a8dadc ;
+  }
+ body{
+   display: flex;
+   min-height: 100vh;
+   align-items: center;
+   justify-content: center;
+ }
+  .div1
+  {
+    min-height: 40%;
+    width:80%;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    padding: 2%;
+  }
+  .div2
+  {
+    width:90%;
+    border: 3px dashed #a8dadc  ;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding:4% 1% 4% 1%;
+  }
+  .div3 ,.div4
+  {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .div2 span, .div2 i{
+    display: block;
+    padding: .2%;
+  }
+  .div4{
+    padding:2%;
+    border-radius: 2px;
+  }
+  .div4 span{
+    margin:2%;
+  }
+  .dragged
+  {
+    background-color: #edf6f9;
+    border: 2px solid #a8dadc  ;
+  }
+  .emailform input{
+    margin:2%;
+    background-color: #edf6f9;
+    border:none;
+    outline:none;
+    border-bottom: 1px solid black;
+  }
+  .clsbtn
+  {
+    cursor: pointer;
+  }
+  .emailform label{
+    margin:2%;
+  }
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@1,600&display=swap" rel="stylesheet">
+</head>
+
+<body style="font-family: 'Nunito', sans-serif; display: flex; flex-direction: column;">
+
+  
+    <% if (flasherror.length>0) { %>
+    <div class="flash" style="width: 50%; padding: 1%; margin: 1%; background-color: white;">
+    <div style="float: left;">
+      <%= flasherror[0] %>
+    </div>
+      <span class="clsbtn" style="float:right;"><i class="fa fa-times"></i></span>
+      <div style="clear: both; height: 0px;"></div>
+    </div> 
+    <% }else if(flashsuccess.length>0){ %>
+      <div class="flash" style="width: 50%; padding: 1%; margin: 1%; background-color: white;">
+      <div style="float: left;">
+        <%= flashsuccess[0] %> 
+      </div>
+      <span class="clsbtn" style="float:right;"><i class="fa fa-times"></i></span>
+      <div style="clear: both; height: 0px;"></div>
+      </div>
+    <% } %> 
+  
+  <div style="display: none;">
+    <input type="file" id="file" class="fileinput" name="uploadfile">
+  </div>
+<div class="div1">
+  <div class="div2">
+
+    <div class="div5">
+      <i class="fa fa-file" draggable="false" style="color: #219ebc; font-size: 60px; padding: .5%; margin-bottom: 20%;"></i>
+    </div>
+    <div class="div3">
+      <span style="text-decoration: underline; color:#0077b6; cursor: pointer; " class="browse">Browse</span>
+      <span>Or</span>
+      <span>Drag your file here</span>
+    </div>
+
+    <div class="div4" style="display: none; flex-direction: column; margin:.1% 2% .1% 2%; width:96%;">
+      <i class="fa fa-file" draggable="false" style="color: #219ebc; font-size: 60px; padding: .5%;"></i>
+      <span  class="span2" style="display: block;"></span>
+      <span  class="span1" style="display: block;"></span>
+      <span  class="span3" style="display: block;"></span>
+      <span class="copy" style="display: block; text-decoration: underline; color:#0077b6; cursor: pointer;">Copy</span>
+      <span>Or</span>
+      <span style="display: block;">Share via email</span>
+      <form class="emailform" method="POST" style="width:100%;">
+          <div style="display: flex; justify-content: space-around;">
+          <label for="from">Sender's Email</label>
+          <input type="email" name="fromemail" id="from">
+          </div>
+          <div style="display: flex; justify-content: space-around;">
+          <label for="to">Reciever's Email</label>
+          <input type="email" name="toemail" id="to">
+          </div>
+          <input style="font-family: 'Nunito', sans-serif; display: block; margin:auto; background-color:#a8dadc; padding: 1%;border:none;; border-radius: 5%; cursor:pointer;" type="submit">
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  drop_zone=document.querySelector('.div1');
+  div2=document.querySelector('.div2');
+  let files;
+  drop_zone.addEventListener('dragover',e=>
+  {
+    e.preventDefault();
+    console.log('drog over')
+    div2.classList.add('dragged')
+  })
+  drop_zone.addEventListener('dragleave',e=>
+  {
+    e.preventDefault();
+    div2.classList.remove('dragged')
+  })
+  function getPromise()
+  {
+       return new Promise((succ,fail)=>
+       {
+        setTimeout(()=>
+        {
+          succ();
+        },2000)
+       })
+  }
+  drop_zone.addEventListener('drop',async (e)=>
+  {
+
+    e.preventDefault();
+    document.querySelector('.div3').innerText="uploading....."
+    console.log(e.dataTransfer.files)
+    files=e.dataTransfer.files;
+    console.log(files)
+    div2.classList.remove('dragged')
+    formdata=new FormData();
+    formdata.append("uploadfile",files[0],files[0].name);
+    await getPromise();
+    let res=await fetch("/file/upload",{
+      method:"POST",
+      body:formdata
+    })
+    res=await res.json();
+    document.querySelector('.div1').style.width='50%';
+    document.querySelector('.div2').style.paddingTop='1%';
+    document.querySelector('.div2').style.paddingBottom='1%';
+    document.querySelector('.div3').style.display='none';
+    document.querySelector('.div4').style.backgroundColor="#edf6f9";
+    document.querySelector('.div4').style.display="flex";
+    document.querySelector('.div5').style.display='none';
+    document.querySelector('.span2').innerHTML=`<div style="display:flex; flex-direction:column; justify-content:center; align-items:center;"><div style="margin-top:2%;">${res.name}</div><div style="margin-top:2%;">${(parseInt(res.size)/1000000).toFixed(2)}mb</div></div>`
+    document.querySelector('.span1').innerHTML=`<div style="margin-top:2%; color:#0077b6;">${res.link}</div>`
+    document.querySelector('.span3').innerHTML=`<div style="margin-top:2%;">Link will expire in next 24 hours</div>`
+    emailform=document.querySelector('.emailform')
+    emailform.action="/send/"+res.uuid;
+    console.log(res)
+  })
+
+
+  let browse=document.querySelector('.browse');
+  browse.addEventListener('click',()=>
+  {
+    
+    document.querySelector('.fileinput').click();
+    document.querySelector('.fileinput').addEventListener('change',async(e)=>
+    {
+    document.querySelector('.div3').innerText="uploading....."
+    div2.classList.remove('dragged')
+    formdata=new FormData();
+    files=document.querySelector('.fileinput').files
+    formdata.append("uploadfile",files[0],files[0].name);
+    await getPromise();
+    let res=await fetch("/file/upload",{
+      method:"POST",
+      body:formdata
+    })
+    res=await res.json();
+    document.querySelector('.div1').style.width='50%';
+    document.querySelector('.div2').style.paddingTop='1%';
+    document.querySelector('.div2').style.paddingBottom='1%';
+    document.querySelector('.div3').style.display='none';
+    document.querySelector('.div4').style.backgroundColor="#edf6f9";
+    document.querySelector('.div4').style.display="flex";
+    document.querySelector('.div5').style.display='none';
+    document.querySelector('.span2').innerHTML=`<div style="display:flex; flex-direction:column; justify-content:center; align-items:center;"><div style="margin-top:2%;">${res.name}</div><div style="margin-top:2%;">${(parseInt(res.size)/1000000).toFixed(2)}mb</div></div>`
+    document.querySelector('.span1').innerHTML=`<div style="margin-top:2%; color:#0077b6;">${res.link}</div>`
+    document.querySelector('.span3').innerHTML=`<div style="margin-top:2%;">Link will expire in next 24 hours</div>`
+    emailform=document.querySelector('.emailform')
+    emailform.action="/send/"+res.uuid;
+    })
+  })
+  
+
+  copy=document.querySelector('.copy');
+  copy.addEventListener('click',()=>
+  {
+    //The select event occurs when a text is selected (marked) in a text area or a text field.
+    //The select() method triggers the select event, or attaches a function to run when a select event occurs.
+
+    copyinput=document.createElement('input');
+    copyinput.value=document.querySelector('.span1').innerText;
+    document.querySelector('body').appendChild(copyinput)
+    copyinput.select();
+
+    //The execCommand() method executes the specified command for the selected part of an editable section.
+
+    document.execCommand('copy');
+    document.querySelector('body').removeChild(copyinput);
+    alert("text copied successfully");
+  })
+  document.querySelector('.clsbtn').addEventListener('click',()=>
+  {
+    document.querySelector('.flash').style.display='none';
+  })
+</script>
+</body>
