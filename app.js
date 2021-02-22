@@ -31,11 +31,20 @@ var upload = multer({ storage: storage })
 
 const{File}=require('./models/dbfile')
 
+var MongoDBStore = require('connect-mongodb-session')(session);
+
+var store = new MongoDBStore({
+  uri: process.env.dburl,
+  collection: 'mySessions'
+});
+
 app=express();
 app.use(session({secret:"thisisasecret",resave: false,saveUninitialized: true,
 cookie: {
     maxAge: 24 * 60 * 60 * 1000
-}}))
+},
+store: store,
+}))
 app.use(flash());
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
